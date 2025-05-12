@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "112233"
+      POSTGRES_DB: campgrounds
+    ports:
+      - "5432:5432"
+
+  scraper:
+    build: .
+    depends_on:
+      - postgres
+    volumes:
+      - .:/src
+    environment:
+      DB_URL: postgresql://postgres:112233@postgres:5432/campgrounds
+    ports:
+      - "5000:5000"
